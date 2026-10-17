@@ -7,11 +7,23 @@ final class UsageService {
 
     // MARK: - Public State
 
-    private(set) var usage: UsageSnapshot?
-    private(set) var error: String?
-    private(set) var lastUpdate: Date?
+    let claude: ProviderUsageState
+    let codex: ProviderUsageState
+    var selectedTab: UsageTab = .claude
+
+    var selectedState: ProviderUsageState {
+        switch selectedTab {
+        case .claude: return claude
+        case .codex: return codex
+        }
+    }
+
+    // The menu bar and existing Claude consumers always use Claude's state.
+    var usage: UsageSnapshot? { claude.usage }
+    var error: String? { claude.error }
+    var lastUpdate: Date? { claude.lastUpdate }
     private(set) var isLoading = false
-    private(set) var planType: String?
+    var planType: String? { claude.planType }
     private(set) var languageRefreshID = 0
     /// Kullanıcı bildirim iznini reddettiyse true; ayarlar panelinde uyarı gösterilir
     private(set) var notificationsDenied = false
@@ -57,7 +69,6 @@ final class UsageService {
 
     // MARK: - Dependencies
 
-    private let provider: any UsageProvider
     private let notifier: any UsageNotifying
     private let defaults: UserDefaults
     private let startsAutomatically: Bool
@@ -68,8 +79,10 @@ final class UsageService {
     // MARK: - Lifecycle
 
     init(provider: any UsageProvider, notifier: any UsageNotifying,
-         defaults: UserDefaults = .standard, startsAutomatically: Bool = true) {
-        self.provider = provider
+         defaults: UserDefaults = .standard, startsAutomatically: Bool = true,
+         codexProvider: (any UsageProvider)? = nil) {
+        claude = ProviderUsageState(provider: provider)
+        codex = ProviderUsageState(provider: codexProvider ?? CodexSampleUsageProvider())
         self.notifier = notifier
         self.defaults = defaults
         self.startsAutomatically = startsAutomatically
@@ -102,22 +115,20 @@ final class UsageService {
 
     // MARK: - Public Methods
 
-    /// Refresh using the selected provider strategy, retaining the last successful data on failure.
+    /// Manual refresh and the single polling timer share this path.
     func refresh() async {
         guard !isLoading else { return }
         isLoading = true
-        defer {
-            isLoading = false
-            planType = provider.planType
-        }
-        do {
-            let snapshot = try await provider.fetchUsage()
+        defer { isLoading = false }
+
+        async let claudeRefresh: Void = refreshClaude()
+        _ = await codex.refresh()
+        await claudeRefresh
+    }
+
+    private func refreshClaude() async {
+        if let snapshot = await claude.refresh() {
             notifyThresholds(for: snapshot)
-            usage = snapshot
-            error = nil
-            lastUpdate = Date()
-        } catch {
-            self.error = error.localizedDescription
         }
     }
 

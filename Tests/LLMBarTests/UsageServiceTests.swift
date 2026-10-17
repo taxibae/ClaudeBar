@@ -124,19 +124,66 @@ final class UsageServiceTests: XCTestCase {
 
     func testConcurrentRefreshIsIgnoredAndLoadingResetsAfterCompletion() async {
         let provider = StubUsageProvider([.success(snapshot(42))])
+        let codex = StubUsageProvider([.success(snapshot(18, providerID: "codex"))])
         provider.suspend = true
         let began = expectation(description: "Provider started")
         provider.onFetch = { began.fulfill() }
-        let service = service(provider, RecordingNotifier())
+        let service = UsageService(provider: provider, notifier: RecordingNotifier(), defaults: defaults,
+                                   startsAutomatically: false, codexProvider: codex)
         let pending = Task { await service.refresh() }
         await fulfillment(of: [began], timeout: 1)
         XCTAssertTrue(service.isLoading)
+        XCTAssertEqual(service.codex.usage?.menuBarPercent, 18, "Codex must not wait for Claude")
         await service.refresh()
         XCTAssertEqual(provider.calls, 1)
+        XCTAssertEqual(codex.calls, 1)
         provider.resume()
         await pending.value
         XCTAssertFalse(service.isLoading)
         XCTAssertEqual(service.usage?.menuBarPercent, 42)
+    }
+
+    func testTabsShareRefreshWithoutSharingResultsErrorsOrAlerts() async {
+        let claude = StubUsageProvider([
+            .success(snapshot(10)), .failure(UsageProviderError(message: "Claude offline")),
+            .success(snapshot(20))
+        ])
+        let codex = StubUsageProvider([
+            .success(snapshot(49, providerID: "codex")), .success(snapshot(100, providerID: "codex")),
+            .failure(UsageProviderError(message: "Codex offline"))
+        ])
+        let notifier = RecordingNotifier()
+        let service = UsageService(provider: claude, notifier: notifier, defaults: defaults,
+                                   startsAutomatically: false, codexProvider: codex)
+        XCTAssertEqual(service.selectedTab, .claude)
+        await service.refresh()
+        let claudeUpdate = service.claude.lastUpdate
+
+        service.selectedTab = .codex
+        XCTAssertTrue(service.selectedState === service.codex)
+        XCTAssertEqual(service.selectedState.usage?.menuBarPercent, 49)
+        XCTAssertEqual(service.usage?.menuBarPercent, 10, "Menu bar must remain tied to Claude")
+        service.selectedTab = .claude
+        XCTAssertEqual(claude.calls, 1)
+        XCTAssertEqual(codex.calls, 1, "Switching tabs must not fetch")
+
+        await service.refresh()
+        XCTAssertEqual(service.claude.error, "Claude offline")
+        XCTAssertEqual(service.claude.lastUpdate, claudeUpdate)
+        XCTAssertEqual(service.codex.usage?.menuBarPercent, 100)
+        XCTAssertNil(service.codex.error)
+        let codexUpdate = service.codex.lastUpdate
+        XCTAssertNotNil(codexUpdate)
+        XCTAssertTrue(notifier.messages.isEmpty, "Codex thresholds must not send alerts")
+
+        await service.refresh()
+        XCTAssertEqual(service.claude.usage?.menuBarPercent, 20)
+        XCTAssertNil(service.claude.error)
+        XCTAssertEqual(service.codex.error, "Codex offline")
+        XCTAssertEqual(service.codex.usage?.menuBarPercent, 100)
+        XCTAssertEqual(service.codex.lastUpdate, codexUpdate)
+        XCTAssertEqual(claude.calls, 3)
+        XCTAssertEqual(codex.calls, 3)
     }
 
     func testPreferencesKeepTheirExistingKeysAndDefaults() {
