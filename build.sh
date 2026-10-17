@@ -4,11 +4,20 @@
 set -e
 
 APP_NAME="LLMBar"
-BUILD_DIR=".build/release"
-APP_BUNDLE="$BUILD_DIR/$APP_NAME.app"
+BUILD_OPTIONS=(-c release "$@")
 
 echo "Building $APP_NAME..."
-swift build -c release
+swift build "${BUILD_OPTIONS[@]}"
+BUILD_DIR="$(swift build "${BUILD_OPTIONS[@]}" --show-bin-path)"
+APP_BUNDLE="$BUILD_DIR/$APP_NAME.app"
+RESOURCE_BUNDLE="$BUILD_DIR/${APP_NAME}_${APP_NAME}.bundle"
+
+# Both native and swiftbuild place the resource bundle beside the executable.
+# Missing resources would make the app crash on its first localized menu view.
+if [ ! -d "$RESOURCE_BUNDLE" ]; then
+    echo "Missing resource bundle: $RESOURCE_BUNDLE" >&2
+    exit 1
+fi
 
 echo "Creating app bundle..."
 rm -rf "$APP_BUNDLE"
@@ -18,20 +27,10 @@ cp "$BUILD_DIR/$APP_NAME" "$APP_BUNDLE/Contents/MacOS/$APP_NAME"
 cp "Resources/Info.plist" "$APP_BUNDLE/Contents/Info.plist"
 cp "Resources/AppIcon.icns" "$APP_BUNDLE/Contents/Resources/AppIcon.icns"
 
-ARCH=$(uname -m)
-if [ "$ARCH" = "arm64" ]; then
-    TRIPLE="arm64-apple-macosx"
-else
-    TRIPLE="x86_64-apple-macosx"
-fi
-
 # The SwiftPM resource bundle must live under Contents/Resources: anything else at the
 # bundle root is "unsealed content" and codesign refuses to seal the app.
 # Localization.swift looks there first and falls back to Bundle.module for `swift run`.
-RESOURCE_BUNDLE=".build/$TRIPLE/release/LLMBar_LLMBar.bundle"
-if [ -d "$RESOURCE_BUNDLE" ]; then
-    cp -r "$RESOURCE_BUNDLE" "$APP_BUNDLE/Contents/Resources/"
-fi
+cp -r "$RESOURCE_BUNDLE" "$APP_BUNDLE/Contents/Resources/"
 
 # Ad-hoc signature: gives the bundle a stable identity so UNUserNotificationCenter
 # and Keychain ACL prompts are attributed to LLMBar instead of an unsigned binary.

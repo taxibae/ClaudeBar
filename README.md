@@ -278,6 +278,9 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 ### Development
 
+See [Usage provider architecture](docs/usage-provider-refactor.md) for the
+provider strategy, Claude adapter, and behavior-preserving regression coverage.
+
 ```bash
 # Clone your fork
 git clone https://github.com/YOUR_USERNAME/claudebar.git
@@ -295,6 +298,39 @@ swift run
 # Build release
 ./build.sh
 ```
+
+On the investigated local machine, the installed Command Line Tools provide
+Swift 6.3.2 and SDK 26.5, matching the installed release app's SDK and linker
+family. Xcode 27 instead selects Swift 6.4 and a different default build engine.
+To use the existing Command Line Tools without changing the package or the
+system-wide Xcode selection:
+
+```bash
+export DEVELOPER_DIR=/Library/Developer/CommandLineTools
+swift --version                          # Expected locally: 6.3.2
+xcrun --sdk macosx --show-sdk-version     # Expected locally: 26.5
+swift package clean                      # Once when switching build environments
+swift run
+# After quitting the debug app, build the release app in the same terminal:
+./build.sh
+```
+
+This selection lasts for the current shell; `unset DEVELOPER_DIR` restores the
+system default. These versions describe the verified local environment, not a
+new minimum requirement. See [the investigation](docs/menu-window-investigation.md).
+
+When building from another terminal, specify the environment on the build
+command itself:
+
+```bash
+DEVELOPER_DIR=/Library/Developer/CommandLineTools ./build.sh
+```
+
+Before opening the app, confirm that
+`.build/release/ClaudeBar.app/Contents/Resources/ClaudeBar_ClaudeBar.bundle`
+exists. This script expects the native SwiftPM resource layout; under the
+Xcode 27 default build engine, it can produce a signed app without copying
+that bundle, causing a crash when localized menu content is first displayed.
 
 ## License
 
