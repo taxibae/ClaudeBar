@@ -105,7 +105,7 @@ enum ClaudeUsageAdapter {
 
         return UsageSnapshot(
             providerID: "claude", menuBarPercent: response.fiveHour?.percent,
-            sections: sections, trackedLimits: tracked
+            sections: sections, trackedLimits: tracked, providerName: "Claude"
         )
     }
 }

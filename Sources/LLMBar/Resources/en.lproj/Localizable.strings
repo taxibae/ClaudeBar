@@ -115,8 +115,9 @@
 "section.codex_plan_usage" = "Codex plan usage limits";
 "usage.five_hour" = "5-hour limit";
 "usage.weekly" = "Weekly limit";
-"limit.codex_five_hour" = "Codex 5-hour limit";
-"limit.codex_weekly" = "Codex weekly limit";
+"limit.codex_five_hour" = "5-hour limit";
+"limit.codex_weekly" = "weekly limit";
+"notification.provider_title" = "%1$@ - %2$@";
 "notification.codex_reset_body" = "Your %@ has been reset. You can continue using Codex.";
 "error.codex_login_required" = "Session expired. Run 'codex login' in Terminal.";
 "error.codex_rate_limited" = "Too many requests, will retry";

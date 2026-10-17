@@ -48,7 +48,7 @@ enum CodexUsageAdapter {
 
         return UsageSnapshot(
             providerID: "codex", menuBarPercent: fiveHour?.percent,
-            sections: sections, trackedLimits: tracked
+            sections: sections, trackedLimits: tracked, providerName: "Codex"
         )
     }
 

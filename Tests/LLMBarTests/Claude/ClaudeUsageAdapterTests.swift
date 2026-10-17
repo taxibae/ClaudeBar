@@ -24,6 +24,7 @@ final class ClaudeUsageAdapterTests: XCTestCase {
         """)
 
         XCTAssertEqual(snapshot.providerID, "claude")
+        XCTAssertEqual(snapshot.providerName, "Claude")
         XCTAssertEqual(snapshot.menuBarPercent, 11)
         XCTAssertEqual(snapshot.sections.map(\.id), ["plan", "weekly", "credits", "extra_usage"])
         XCTAssertEqual(snapshot.sections.map(\.showsPlan), [true, false, false, false])

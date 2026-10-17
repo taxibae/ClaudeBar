@@ -159,6 +159,25 @@ final class UsageServiceTests: XCTestCase {
         XCTAssertEqual(service.menuBarText, "C13% G10%")
     }
 
+    func testAlertTitlesNameTheProvider() async {
+        func named(_ percent: Int) -> UsageSnapshot {
+            let base = snapshot(percent, providerID: "codex")
+            return UsageSnapshot(providerID: base.providerID, menuBarPercent: base.menuBarPercent, sections: [],
+                                 trackedLimits: base.trackedLimits, providerName: "Codex")
+        }
+        let notifier = RecordingNotifier()
+        let service = UsageService(provider: StubUsageProvider([]), notifier: notifier, defaults: defaults,
+                                   startsAutomatically: false,
+                                   codexProvider: StubUsageProvider([.success(named(10)), .success(named(100))]))
+        await service.refresh()
+        await service.refresh()
+        XCTAssertEqual(notifier.messages.map(\.title), [
+            "Codex - \(L("notification.50_title"))", "Codex - \(L("notification.75_title"))",
+            "Codex - \(L("notification.limit_title"))"
+        ])
+        XCTAssertEqual(notifier.messages.first?.body, L("notification.50_body", "Custom limit"))
+    }
+
     func testSameLimitIDKeepsSeparateHistoryPerProvider() async {
         let claude = StubUsageProvider([.success(snapshot(49)), .success(snapshot(49))])
         let codex = StubUsageProvider([

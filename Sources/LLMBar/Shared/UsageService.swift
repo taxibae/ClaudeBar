@@ -186,7 +186,7 @@ final class UsageService {
             let snapshot = BucketSnapshot(percent: item.bucket.percent, resetsAt: item.bucket.resetsAt)
             let events = UsageThresholds.events(previous: previous[key], current: snapshot, settings: settings)
             for event in events {
-                deliver(event, limit: item)
+                deliver(event, limit: item, providerName: new.providerName)
             }
             next[key] = snapshot
         }
@@ -194,14 +194,19 @@ final class UsageService {
         previous = previous.filter { !$0.key.hasPrefix(prefix) }.merging(next) { $1 }
     }
 
-    private func deliver(_ event: UsageEvent, limit: TrackedUsageLimit) {
+    private func deliver(_ event: UsageEvent, limit: TrackedUsageLimit, providerName: String?) {
         let limitName = limit.name.text
         let bucket = limit.bucket
+        // "Codex - Limit Reached": the title tells which provider the alert is about
+        func send(title key: String, body: String) {
+            let title = L(key)
+            notifier.send(title: providerName.map { L("notification.provider_title", $0, title) } ?? title, body: body)
+        }
         switch event {
         case .reached50:
-            notifier.send(title: L("notification.50_title"), body: L("notification.50_body", limitName))
+            send(title: "notification.50_title", body: L("notification.50_body", limitName))
         case .reached75:
-            notifier.send(title: L("notification.75_title"), body: L("notification.75_body", limitName))
+            send(title: "notification.75_title", body: L("notification.75_body", limitName))
         case .limitReached:
             let body: String
             if let remaining = bucket.remainingText() {
@@ -209,9 +214,9 @@ final class UsageService {
             } else {
                 body = L("notification.limit_body", limitName)
             }
-            notifier.send(title: L("notification.limit_title"), body: body)
+            send(title: "notification.limit_title", body: body)
         case .reset:
-            notifier.send(title: L("notification.reset_title"), body: L(limit.resetBodyKey, limitName))
+            send(title: "notification.reset_title", body: L(limit.resetBodyKey, limitName))
         }
     }
 }

@@ -34,6 +34,8 @@ struct UsageSnapshot: Equatable, Sendable {
     let menuBarPercent: Int?
     let sections: [UsageSection]
     let trackedLimits: [TrackedUsageLimit]
+    /// Product name prefixed to alert titles; a product name, so never translated
+    var providerName: String? = nil
 }
 
 struct UsageSection: Identifiable, Equatable, Sendable {

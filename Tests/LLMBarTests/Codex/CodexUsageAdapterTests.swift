@@ -21,6 +21,7 @@ final class CodexUsageAdapterTests: XCTestCase {
          "credits":{"has_credits":false}}
         """)
         XCTAssertEqual(snapshot.providerID, "codex")
+        XCTAssertEqual(snapshot.providerName, "Codex")
         XCTAssertEqual(snapshot.menuBarPercent, 32)
         XCTAssertEqual(snapshot.sections.map(\.id), ["plan", "weekly"])
         XCTAssertEqual(snapshot.sections.first?.title, .localized("section.codex_plan_usage"))
