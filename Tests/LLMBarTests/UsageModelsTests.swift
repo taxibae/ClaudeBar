@@ -1,5 +1,5 @@
 import XCTest
-@testable import ClaudeBar
+@testable import LLMBar
 
 final class UsageModelsTests: XCTestCase {
 

@@ -202,7 +202,7 @@ struct UsageView: View {
             }
 
             HStack(spacing: 12) {
-                if let url = URL(string: "https://github.com/kemalasliyuksek/claudebar") {
+                if let url = URL(string: "https://github.com/taxibae/ClaudeBar") {
                     Link(destination: url) {
                         HStack(spacing: 4) {
                             Image(systemName: "link")
@@ -215,7 +215,7 @@ struct UsageView: View {
                     .foregroundStyle(.secondary)
                 }
 
-                if let url = URL(string: "https://github.com/kemalasliyuksek/claudebar/issues") {
+                if let url = URL(string: "https://github.com/taxibae/ClaudeBar/issues") {
                     Link(destination: url) {
                         HStack(spacing: 4) {
                             Image(systemName: "exclamationmark.bubble")

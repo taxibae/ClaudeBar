@@ -1,9 +1,9 @@
 #!/bin/bash
-# Build script for ClaudeBar
+# Build script for LLMBar
 
 set -e
 
-APP_NAME="ClaudeBar"
+APP_NAME="LLMBar"
 BUILD_DIR=".build/release"
 APP_BUNDLE="$BUILD_DIR/$APP_NAME.app"
 
@@ -28,13 +28,13 @@ fi
 # The SwiftPM resource bundle must live under Contents/Resources: anything else at the
 # bundle root is "unsealed content" and codesign refuses to seal the app.
 # Localization.swift looks there first and falls back to Bundle.module for `swift run`.
-RESOURCE_BUNDLE=".build/$TRIPLE/release/ClaudeBar_ClaudeBar.bundle"
+RESOURCE_BUNDLE=".build/$TRIPLE/release/LLMBar_LLMBar.bundle"
 if [ -d "$RESOURCE_BUNDLE" ]; then
     cp -r "$RESOURCE_BUNDLE" "$APP_BUNDLE/Contents/Resources/"
 fi
 
 # Ad-hoc signature: gives the bundle a stable identity so UNUserNotificationCenter
-# and Keychain ACL prompts are attributed to ClaudeBar instead of an unsigned binary.
+# and Keychain ACL prompts are attributed to LLMBar instead of an unsigned binary.
 echo "Signing (ad-hoc)..."
 codesign --force --deep --sign - "$APP_BUNDLE"
 codesign --verify --deep --strict "$APP_BUNDLE"

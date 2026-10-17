@@ -1,4 +1,4 @@
-/* ClaudeBar - Türkçe */
+/* LLMBar - Türkçe */
 
 /* Section Headers */
 "section.plan_usage" = "Claude plan kullanım limitleri";
@@ -44,9 +44,9 @@
 "settings.notify_reset" = "Sıfırlandığında bildir";
 
 /* About */
-"about.title" = "Hakkında";
-"about.description" = "Claude kullanım limitlerini izlemek için hafif bir menü çubuğu uygulaması.";
-"about.created_by" = "Geliştirici";
+"about.title" = "LLMBar Hakkında";
+"about.description" = "LLM kullanım limitlerini izlemek için hafif bir menü çubuğu uygulaması. Şu anda Claude destekleniyor.";
+"about.created_by" = "ClaudeBar temel alınmıştır; geliştirici";
 "about.github" = "GitHub";
 "about.report_issue" = "Sorun Bildir";
 

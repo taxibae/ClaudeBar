@@ -1,4 +1,4 @@
-/* ClaudeBar - 简体中文 */
+/* LLMBar - 简体中文 */
 
 /* Section Headers */
 "section.plan_usage" = "Claude 计划使用限额";
@@ -44,9 +44,9 @@
 "settings.notify_reset" = "限额重置时通知";
 
 /* About */
-"about.title" = "关于";
-"about.description" = "一款用于监控 Claude 使用限额的轻量级菜单栏应用。";
-"about.created_by" = "开发者";
+"about.title" = "关于 LLMBar";
+"about.description" = "用于监控 LLM 使用限额的轻量级菜单栏应用。目前支持 Claude。";
+"about.created_by" = "基于 ClaudeBar，原作者";
 "about.github" = "GitHub";
 "about.report_issue" = "报告问题";
 

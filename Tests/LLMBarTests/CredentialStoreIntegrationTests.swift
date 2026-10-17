@@ -1,5 +1,5 @@
 import XCTest
-@testable import ClaudeBar
+@testable import LLMBar
 
 /// Gerçek `security` aracıyla uçtan uca okuma/yazma. Kendi geçici servis adını kullanır,
 /// Claude Code'un kaydına dokunmaz ve sonunda kaydı siler.
@@ -10,9 +10,9 @@ final class CredentialStoreIntegrationTests: XCTestCase {
     private var store: CredentialStore!
 
     override func setUpWithError() throws {
-        tempDir = FileManager.default.temporaryDirectory.appendingPathComponent("claudebar-test-\(UUID().uuidString)")
+        tempDir = FileManager.default.temporaryDirectory.appendingPathComponent("llmbar-test-\(UUID().uuidString)")
         try FileManager.default.createDirectory(at: tempDir, withIntermediateDirectories: true)
-        serviceName = "ClaudeBar-selftest-\(UUID().uuidString.prefix(8))"
+        serviceName = "LLMBar-selftest-\(UUID().uuidString.prefix(8))"
         store = CredentialStore(
             configDir: tempDir,
             serviceName: serviceName,

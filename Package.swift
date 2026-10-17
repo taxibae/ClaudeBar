@@ -2,21 +2,21 @@
 import PackageDescription
 
 let package = Package(
-    name: "ClaudeBar",
+    name: "LLMBar",
     defaultLocalization: "en",
     platforms: [
         .macOS(.v14)
     ],
     targets: [
         .executableTarget(
-            name: "ClaudeBar",
-            path: "Sources/ClaudeBar",
+            name: "LLMBar",
+            path: "Sources/LLMBar",
             resources: [.process("Resources")]
         ),
         .testTarget(
-            name: "ClaudeBarTests",
-            dependencies: ["ClaudeBar"],
-            path: "Tests/ClaudeBarTests"
+            name: "LLMBarTests",
+            dependencies: ["LLMBar"],
+            path: "Tests/LLMBarTests"
         )
     ]
 )

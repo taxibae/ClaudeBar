@@ -2,12 +2,16 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+    <key>CFBundleDevelopmentRegion</key>
+    <string>en</string>
     <key>CFBundleName</key>
-    <string>ClaudeBar</string>
+    <string>LLMBar</string>
     <key>CFBundleDisplayName</key>
-    <string>ClaudeBar</string>
+    <string>LLMBar</string>
     <key>CFBundleIdentifier</key>
-    <string>com.claudebar.app</string>
+    <string>com.llmbar.app</string>
+    <key>NSHumanReadableCopyright</key>
+    <string>Based on ClaudeBar. Copyright © 2026 Kemal Aslıyüksek.</string>
     <key>CFBundleVersion</key>
     <string>1.1.0</string>
     <key>CFBundleShortVersionString</key>
@@ -15,9 +19,11 @@
     <key>CFBundlePackageType</key>
     <string>APPL</string>
     <key>CFBundleExecutable</key>
-    <string>ClaudeBar</string>
+    <string>LLMBar</string>
     <key>LSMinimumSystemVersion</key>
     <string>14.0</string>
+    <key>LSApplicationCategoryType</key>
+    <string>public.app-category.utilities</string>
     <key>LSUIElement</key>
     <true/>
     <key>NSHighResolutionCapable</key>

@@ -26,7 +26,7 @@ enum AppLanguage: String, CaseIterable {
 /// için build.sh kaynakları Contents/Resources altına koyar; önce orası denenir.
 /// swift run ve testlerde orada bir şey yoktur, Bundle.module derleme dizinini bulur.
 private let resourceBundle: Bundle = {
-    let name = "ClaudeBar_ClaudeBar.bundle"
+    let name = "LLMBar_LLMBar.bundle"
     if let resources = Bundle.main.resourceURL,
        let bundle = Bundle(url: resources.appendingPathComponent(name)) {
         return bundle

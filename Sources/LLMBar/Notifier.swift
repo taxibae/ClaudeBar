@@ -11,7 +11,7 @@ protocol UsageNotifying: AnyObject {
 /// Sistem bildirimlerini gönderir.
 ///
 /// Uygulama bir .app paketi içinde çalışıyorsa UNUserNotificationCenter kullanılır:
-/// izin yönetimi Sistem Ayarları'na düşer, bildirim ClaudeBar adı ve simgesiyle görünür.
+/// izin yönetimi Sistem Ayarları'na düşer, bildirim LLMBar adı ve simgesiyle görünür.
 /// `swift run` gibi paket dışı çalışmalarda bundle identifier olmadığı için merkez
 /// kullanılamaz; o durumda eski AppleScript yolu devreye girer.
 @MainActor

@@ -1,5 +1,5 @@
 import XCTest
-@testable import ClaudeBar
+@testable import LLMBar
 
 @MainActor
 final class UsageServiceTests: XCTestCase {
@@ -7,7 +7,7 @@ final class UsageServiceTests: XCTestCase {
     private var suite: String!
 
     override func setUpWithError() throws {
-        suite = "ClaudeBar-tests-\(UUID().uuidString)"
+        suite = "LLMBar-tests-\(UUID().uuidString)"
         defaults = try XCTUnwrap(UserDefaults(suiteName: suite))
     }
 

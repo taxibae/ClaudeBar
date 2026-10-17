@@ -1,4 +1,4 @@
-/* ClaudeBar - Русский */
+/* LLMBar - Русский */
 
 /* Section Headers */
 "section.plan_usage" = "Лимиты использования плана Claude";
@@ -44,9 +44,9 @@
 "settings.notify_reset" = "Уведомить при сбросе лимита";
 
 /* About */
-"about.title" = "О программе";
-"about.description" = "Лёгкое приложение в строке меню для мониторинга лимитов использования Claude.";
-"about.created_by" = "Разработчик";
+"about.title" = "О LLMBar";
+"about.description" = "Лёгкое приложение в строке меню для мониторинга лимитов использования LLM. Сейчас поддерживается Claude.";
+"about.created_by" = "На основе ClaudeBar, автор";
 "about.github" = "GitHub";
 "about.report_issue" = "Сообщить о проблеме";
 

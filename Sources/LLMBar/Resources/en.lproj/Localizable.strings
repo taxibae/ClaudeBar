@@ -1,4 +1,4 @@
-/* ClaudeBar - English */
+/* LLMBar - English */
 
 /* Section Headers */
 "section.plan_usage" = "Claude plan usage limits";
@@ -44,9 +44,9 @@
 "settings.notify_reset" = "Notify when limit resets";
 
 /* About */
-"about.title" = "About";
-"about.description" = "A lightweight menu bar app for monitoring Claude usage limits.";
-"about.created_by" = "Created by";
+"about.title" = "About LLMBar";
+"about.description" = "A lightweight menu bar app for monitoring LLM usage limits. Currently supports Claude.";
+"about.created_by" = "Based on ClaudeBar by";
 "about.github" = "GitHub";
 "about.report_issue" = "Report Issue";
 

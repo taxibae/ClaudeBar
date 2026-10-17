@@ -1,4 +1,4 @@
-/* ClaudeBar - Español */
+/* LLMBar - Español */
 
 /* Section Headers */
 "section.plan_usage" = "Límites de uso del plan Claude";
@@ -44,9 +44,9 @@
 "settings.notify_reset" = "Notificar al restablecerse";
 
 /* About */
-"about.title" = "Acerca de";
-"about.description" = "Una aplicación ligera de barra de menú para monitorear los límites de uso de Claude.";
-"about.created_by" = "Creado por";
+"about.title" = "Acerca de LLMBar";
+"about.description" = "Una aplicación ligera de barra de menú para monitorear los límites de uso de LLM. Actualmente compatible con Claude.";
+"about.created_by" = "Basado en ClaudeBar, creado por";
 "about.github" = "GitHub";
 "about.report_issue" = "Reportar problema";
 
