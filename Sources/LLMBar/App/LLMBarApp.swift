@@ -17,16 +17,15 @@ struct LLMBarApp: App {
         .menuBarExtraStyle(.window)
     }
     
-    /// Menu bar icon with current session usage percentage
+    /// Each provider's five-hour usage, e.g. "C12% G10%"; the gauge icon only while there is none
+    @ViewBuilder
     private var menuBarLabel: some View {
-        HStack(spacing: 3) {
+        if let text = service.menuBarText {
+            Text(text)
+                .font(.caption2)
+                .monospacedDigit()
+        } else {
             Image(systemName: "gauge.medium")
-            
-            if service.showPercentage, let percent = service.usage?.menuBarPercent {
-                Text("\(percent)%")
-                    .font(.caption2)
-                    .monospacedDigit()
-            }
         }
     }
 }

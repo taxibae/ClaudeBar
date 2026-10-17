@@ -123,6 +123,42 @@ final class UsageServiceTests: XCTestCase {
         XCTAssertTrue(notifier.messages.isEmpty)
     }
 
+    func testMenuBarTextCombinesProvidersAndFallsBackToIconOnly() async {
+        func menuBarText(claude: Int?, codex: Int?, showPercentage: Bool = true) async -> String? {
+            func result(_ percent: Int?, _ id: String) -> [Result<UsageSnapshot, UsageProviderError>] {
+                [percent.map { .success(snapshot($0, providerID: id)) } ?? .failure(UsageProviderError(message: "none"))]
+            }
+            let service = UsageService(provider: StubUsageProvider(result(claude, "claude")), notifier: RecordingNotifier(),
+                                       defaults: defaults, startsAutomatically: false,
+                                       codexProvider: StubUsageProvider(result(codex, "codex")))
+            service.showPercentage = showPercentage
+            await service.refresh()
+            return service.menuBarText
+        }
+        let both = await menuBarText(claude: 12, codex: 10)
+        let claudeOnly = await menuBarText(claude: 12, codex: nil)
+        let codexOnly = await menuBarText(claude: nil, codex: 10)
+        let none = await menuBarText(claude: nil, codex: nil)
+        let hidden = await menuBarText(claude: 12, codex: 10, showPercentage: false)
+        XCTAssertEqual(both, "C12% G10%")
+        XCTAssertEqual(claudeOnly, "C12%")
+        XCTAssertEqual(codexOnly, "G10%")
+        XCTAssertNil(none)
+        XCTAssertNil(hidden)
+    }
+
+    func testMenuBarTextKeepsLastKnownValueAfterFailure() async {
+        let codex = StubUsageProvider([
+            .success(snapshot(10, providerID: "codex")), .failure(UsageProviderError(message: "offline"))
+        ])
+        let service = UsageService(provider: StubUsageProvider([.success(snapshot(12)), .success(snapshot(13))]),
+                                   notifier: RecordingNotifier(), defaults: defaults,
+                                   startsAutomatically: false, codexProvider: codex)
+        await service.refresh()
+        await service.refresh()
+        XCTAssertEqual(service.menuBarText, "C13% G10%")
+    }
+
     func testSameLimitIDKeepsSeparateHistoryPerProvider() async {
         let claude = StubUsageProvider([.success(snapshot(49)), .success(snapshot(49))])
         let codex = StubUsageProvider([

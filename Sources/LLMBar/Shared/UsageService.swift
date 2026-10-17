@@ -18,7 +18,16 @@ final class UsageService {
         }
     }
 
-    // The menu bar and existing Claude consumers always use Claude's state.
+    /// "C12% G10%": each provider's five-hour percentage, omitted when it has none.
+    /// Nil shows the icon instead, either because percentages are hidden or nothing is known yet.
+    var menuBarText: String? {
+        guard showPercentage else { return nil }
+        let parts = [("C", claude.usage?.menuBarPercent), ("G", codex.usage?.menuBarPercent)]
+            .compactMap { prefix, percent in percent.map { "\(prefix)\($0)%" } }
+        return parts.isEmpty ? nil : parts.joined(separator: " ")
+    }
+
+    // Existing Claude consumers keep reading Claude's state.
     var usage: UsageSnapshot? { claude.usage }
     var error: String? { claude.error }
     var lastUpdate: Date? { claude.lastUpdate }
