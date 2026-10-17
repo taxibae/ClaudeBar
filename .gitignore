@@ -12,3 +12,6 @@ DerivedData/
 # IDE
 .idea/
 .vscode/
+
+# Private files
+private-*.md

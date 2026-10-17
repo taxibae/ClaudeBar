@@ -14,20 +14,6 @@
   <img src="https://img.shields.io/badge/License-MIT-green" alt="License">
 </p>
 
-<p align="center">
-  <a href="README.md">English</a> •
-  <a href="docs/README-TR.md">Türkçe</a> •
-  <a href="docs/README-ZH.md">中文</a> •
-  <a href="docs/README-HI.md">हिन्दी</a> •
-  <a href="docs/README-ES.md">Español</a> •
-  <a href="docs/README-FR.md">Français</a> •
-  <a href="docs/README-AR.md">العربية</a> •
-  <a href="docs/README-PT.md">Português</a> •
-  <a href="docs/README-JA.md">日本語</a> •
-  <a href="docs/README-RU.md">Русский</a> •
-  <a href="docs/README-IT.md">Italiano</a>
-</p>
-
 ---
 
 ## Features
@@ -38,11 +24,11 @@
 - **Usage Credits** - Shows one-time credits and when they expire
 - **Extra Usage Support** - Track pay-as-you-go spend, and see why it is disabled when your organization turns it off
 - **Color-coded Progress Bars** - Green, yellow, orange, red based on usage percentage
-- **Multi-language Support** - English, Turkish, Chinese, Spanish, Russian with in-app language picker
+- **Language Picker** - English, with an in-app language picker for future translations
 - **Customizable Notifications** - Native Notification Center alerts at 50%, 75%, 100%, or on reset, for every tracked limit
 - **Auto-refresh** - Configurable refresh interval (30s, 1m, 2m, 5m)
 - **Launch at Login** - Optionally start with your Mac
-- **Menu Bar Percentage** - Show/hide usage percentage in menu bar
+- **Menu Bar Percentage** - Show/hide five-hour usage in the menu bar as `C12% G10%` (C = Claude, G = Codex); the gauge icon appears only while no usage is known
 - **Native Experience** - Built with SwiftUI, follows macOS design guidelines
 - **Lightweight** - Minimal resource footprint, no Electron
 - **Privacy Focused** - No analytics, no telemetry
@@ -121,8 +107,8 @@ Click the ⚙️ icon to configure:
 | Setting | Description |
 |---------|-------------|
 | Launch at login | Start automatically when you log in |
-| Show % in menu bar | Display percentage next to the menu bar icon |
-| Language | Choose app language (System, English, Turkish, 中文, Español, Русский) |
+| Show % in menu bar | Display Claude (C) and Codex (G) five-hour usage in place of the menu bar icon, e.g. `C12% G10%` |
+| Language | Choose app language (System, English) |
 | Refresh interval | How often to fetch usage data (30s - 5m) |
 | Notify when 50% used | Send notification at 50% usage |
 | Notify when 75% used | Send notification at 75% usage |
@@ -237,33 +223,25 @@ claude logout && claude login
 
 ```
 claudebar/
-├── Package.swift              # Swift Package Manager manifest
-├── build.sh                   # Build script
-├── LICENSE                    # MIT License
-├── README.md                  # This file
+├── Package.swift                  # Swift Package Manager manifest
+├── build.sh                       # Build script
+├── LICENSE                        # MIT License
+├── README.md                      # This file
 ├── assets/
-│   └── icons/                 # App icons
-├── docs/                      # Translated READMEs
+│   └── icons/                     # App icons
 ├── Resources/
-│   ├── AppIcon.icns           # macOS app icon
-│   └── Info.plist             # App metadata
-├── Tests/ClaudeBarTests/      # Unit tests (swift test)
-└── Sources/ClaudeBar/
-    ├── ClaudeBarApp.swift     # App entry point
-    ├── CredentialStore.swift  # Keychain / credential file access, Claude Code lock files
-    ├── Localization.swift     # L() helper, language override, AppLanguage enum
-    ├── Notifier.swift         # Notification Center with AppleScript fallback
-    ├── OAuthClient.swift      # Usage fetch and token refresh
-    ├── UsageModels.swift      # Data models
-    ├── UsageService.swift     # Orchestration, polling, settings
-    ├── UsageThresholds.swift  # Pure threshold / reset detection
-    ├── UsageView.swift        # SwiftUI views
-    └── Resources/
-        ├── en.lproj/          # English strings
-        ├── tr.lproj/          # Turkish strings
-        ├── zh-Hans.lproj/     # Simplified Chinese strings
-        ├── es.lproj/          # Spanish strings
-        └── ru.lproj/          # Russian strings
+│   ├── AppIcon.icns               # macOS app icon
+│   └── Info.plist                 # App metadata
+├── Tests/LLMBarTests/             # Unit tests (swift test)
+│   ├── Claude/
+│   ├── Codex/
+│   └── Shared/
+└── Sources/LLMBar/
+    ├── App/                       # Entry point, SwiftUI views, notifications, L() localization helper
+    ├── Shared/                    # Provider protocol, common models, polling service, thresholds, Keychain tool
+    ├── Claude/                    # Claude Code credentials and lock files, OAuth client, response models, adapter
+    ├── Codex/                     # Codex CLI credentials, ChatGPT usage client, response models, adapter
+    └── Resources/                 # Localized strings (en)
 ```
 
 ## Contributing
