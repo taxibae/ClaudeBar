@@ -45,7 +45,7 @@
 
 /* About */
 "about.title" = "About LLMBar";
-"about.description" = "A lightweight menu bar app for monitoring LLM usage limits. Currently supports Claude.";
+"about.description" = "A lightweight menu bar app for monitoring LLM usage limits. Currently supports Claude and Codex.";
 "about.created_by" = "Based on ClaudeBar by";
 "about.github" = "GitHub";
 "about.report_issue" = "Report Issue";
@@ -110,3 +110,15 @@
 "settings.notifications_denied" = "Turned off in System Settings > Notifications";
 "limit.opus_weekly" = "Opus weekly";
 "limit.model_weekly" = "%@ weekly";
+
+/* Codex */
+"section.codex_plan_usage" = "Codex plan usage limits";
+"usage.five_hour" = "5-hour limit";
+"usage.weekly" = "Weekly limit";
+"limit.codex_five_hour" = "Codex 5-hour limit";
+"limit.codex_weekly" = "Codex weekly limit";
+"notification.codex_reset_body" = "Your %@ has been reset. You can continue using Codex.";
+"error.codex_login_required" = "Session expired. Run 'codex login' in Terminal.";
+"error.codex_rate_limited" = "Too many requests, will retry";
+"error.codex_unsupported_storage" = "Unsupported Codex credential storage";
+"error.codex_account_changed" = "Codex account changed, will retry";
