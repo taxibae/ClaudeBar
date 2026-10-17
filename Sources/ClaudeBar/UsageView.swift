@@ -7,14 +7,6 @@ struct UsageView: View {
     @State private var showSettings = false
     @State private var showAbout = false
 
-    /// Bir kullanım satırının görünüm verisi; hangi API alanından geldiği burada önemsizdir
-    private struct LimitRow: Identifiable {
-        let id: String
-        let title: String
-        let subtitle: String?
-        let bucket: UsageBucket
-    }
-
     private func barColor(for percent: Int) -> Color {
         switch percent {
         case 0..<50: return .green
@@ -27,38 +19,17 @@ struct UsageView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             if let usage = service.usage {
-                sectionHeader(L("section.plan_usage"), showPlan: true)
-                if let bucket = usage.fiveHour, bucket.hasData {
-                    usageRow(
-                        title: L("usage.current_session"),
-                        subtitle: bucket.resetText(style: .relative),
-                        bucket: bucket
-                    )
-                }
-
-                let weekly = weeklyRows(for: usage)
-                if !weekly.isEmpty {
-                    divider
-                    sectionHeader(L("section.weekly"))
-                    ForEach(weekly) { row in
-                        usageRow(title: row.title, subtitle: row.subtitle, bucket: row.bucket)
+                ForEach(Array(usage.sections.enumerated()), id: \.element.id) { index, section in
+                    if index > 0 { divider }
+                    sectionHeader(section.title.text, showPlan: section.showsPlan)
+                    ForEach(section.rows) { row in
+                        switch row {
+                        case .quota(let quota):
+                            usageRow(title: quota.title.text, subtitle: quota.subtitleText(), bucket: quota.bucket)
+                        case .spending(let spending):
+                            extraUsageRow(spending)
+                        }
                     }
-                }
-
-                if let credit = usage.oneTimeCredit, credit.hasData {
-                    divider
-                    sectionHeader(L("section.credits"))
-                    usageRow(
-                        title: L("usage.one_time_credit"),
-                        subtitle: credit.resetText(style: .expires),
-                        bucket: credit
-                    )
-                }
-
-                if let extra = usage.extraUsage, extra.isVisible {
-                    divider
-                    sectionHeader(L("section.extra_usage"))
-                    extraUsageRow(extra)
                 }
 
             } else if let error = service.error {
@@ -84,53 +55,6 @@ struct UsageView: View {
         .frame(minWidth: 340, idealWidth: 340)
         .fixedSize(horizontal: true, vertical: false)
         .id(service.languageRefreshID)
-    }
-
-    // MARK: - Weekly Rows
-
-    /// Haftalık bölümün satırları. Sıra Claude Code'un /usage ekranıyla aynı:
-    /// tüm modeller, Sonnet, Opus (yalnızca kullanıldıysa), sonra limits[] içindeki model kovaları.
-    private func weeklyRows(for usage: UsageResponse) -> [LimitRow] {
-        var rows: [LimitRow] = []
-
-        if let bucket = usage.sevenDay, bucket.hasData {
-            rows.append(LimitRow(
-                id: "seven_day",
-                title: L("usage.all_models"),
-                subtitle: bucket.resetText(style: .absolute),
-                bucket: bucket
-            ))
-        }
-
-        if let bucket = usage.sevenDaySonnet, bucket.hasData {
-            rows.append(LimitRow(
-                id: "seven_day_sonnet",
-                title: L("usage.sonnet_only"),
-                subtitle: bucket.percent == 0 ? L("usage.sonnet_not_used") : bucket.resetText(style: .absolute),
-                bucket: bucket
-            ))
-        }
-
-        if let bucket = usage.sevenDayOpus, bucket.hasData, bucket.percent > 0 {
-            rows.append(LimitRow(
-                id: "seven_day_opus",
-                title: L("usage.opus_only"),
-                subtitle: bucket.resetText(style: .absolute),
-                bucket: bucket
-            ))
-        }
-
-        for limit in usage.modelLimits {
-            guard let name = limit.modelName else { continue }
-            rows.append(LimitRow(
-                id: "model:\(name.lowercased())",
-                title: L("usage.model_only", name),
-                subtitle: limit.bucket.resetText(style: .absolute),
-                bucket: limit.bucket
-            ))
-        }
-
-        return rows
     }
 
     // MARK: - Section Header
@@ -192,10 +116,10 @@ struct UsageView: View {
 
     // MARK: - Extra Usage Row
 
-    private func extraUsageRow(_ extra: ExtraUsage) -> some View {
+    private func extraUsageRow(_ extra: UsageSpendingRow) -> some View {
         VStack(alignment: .leading, spacing: 4) {
             HStack(spacing: 12) {
-                Text(L("usage.spent", extra.usedAmount))
+                Text(L("usage.spent", extra.usedAmountText))
                     .font(.system(size: 13))
                     .frame(width: 100, alignment: .leading)
 
@@ -208,7 +132,7 @@ struct UsageView: View {
             }
 
             // Kapatılmışsa gerekçe, açıksa sıfırlanma tarihi ve limit
-            Text(extra.disabledReasonText ?? L("usage.resets_limit", extra.resetDateText(), extra.limitAmount))
+            Text(extra.disabledReason?.text ?? L("usage.resets_limit", extra.resetDateText(), extra.limitAmountText))
                 .font(.system(size: 11))
                 .foregroundStyle(.secondary)
         }

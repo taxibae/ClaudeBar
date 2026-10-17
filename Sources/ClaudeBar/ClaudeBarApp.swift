@@ -3,7 +3,7 @@ import SwiftUI
 /// Menu bar application for monitoring Claude usage limits
 @main
 struct ClaudeBarApp: App {
-    @State private var service = UsageService()
+    @State private var service = UsageService(provider: ClaudeUsageProvider(), notifier: Notifier())
     
     var body: some Scene {
         MenuBarExtra {
@@ -20,7 +20,7 @@ struct ClaudeBarApp: App {
         HStack(spacing: 3) {
             Image(systemName: "gauge.medium")
             
-            if service.showPercentage, let percent = service.usage?.fiveHour?.percent {
+            if service.showPercentage, let percent = service.usage?.menuBarPercent {
                 Text("\(percent)%")
                     .font(.caption2)
                     .monospacedDigit()

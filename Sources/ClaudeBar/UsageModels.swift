@@ -145,7 +145,7 @@ struct ExtraUsage: Codable, Equatable {
 
 /// Kullanım kovası. utilization null gelebilir (örneğin planın o penceresi yoksa);
 /// bu durumda hasData false olur ve satır gizlenir.
-struct UsageBucket: Codable, Equatable {
+struct UsageBucket: Codable, Equatable, Sendable {
     let utilization: Double?
     let resetsAt: String?
 
@@ -224,7 +224,7 @@ struct UsageBucket: Codable, Equatable {
         return "\(dayFormatter.string(from: rounded)) \(timeFormatter.string(from: rounded))"
     }
 
-    enum ResetStyle {
+    enum ResetStyle: Equatable, Sendable {
         case relative   // "Resets in 3 hr 56 min"
         case absolute   // "Resets Sat 9:59 AM"
         case expires    // "Expires Sat 9:59 AM" (tek seferlik kredi)
@@ -250,13 +250,17 @@ enum ISO8601 {
 /// Cent cinsinden tutarı seçili dilin para biçimiyle yazar; para birimi gelmezse USD varsayılır
 enum Money {
     static func format(cents: Double, currency: String?, fractionDigits: Int) -> String {
+        format(amount: cents / 100, currency: currency, fractionDigits: fractionDigits)
+    }
+
+    static func format(amount: Double, currency: String?, fractionDigits: Int) -> String {
         let formatter = NumberFormatter()
         formatter.locale = activeLocale()
         formatter.numberStyle = .currency
         formatter.currencyCode = currency?.uppercased() ?? "USD"
         formatter.minimumFractionDigits = fractionDigits
         formatter.maximumFractionDigits = fractionDigits
-        return formatter.string(from: NSNumber(value: cents / 100)) ?? String(format: "%.2f", cents / 100)
+        return formatter.string(from: NSNumber(value: amount)) ?? String(format: "%.2f", amount)
     }
 }
 

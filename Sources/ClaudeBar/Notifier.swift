@@ -2,6 +2,12 @@ import Foundation
 import AppKit
 import UserNotifications
 
+@MainActor
+protocol UsageNotifying: AnyObject {
+    func requestAuthorization() async -> Bool?
+    func send(title: String, body: String)
+}
+
 /// Sistem bildirimlerini gönderir.
 ///
 /// Uygulama bir .app paketi içinde çalışıyorsa UNUserNotificationCenter kullanılır:
@@ -9,7 +15,7 @@ import UserNotifications
 /// `swift run` gibi paket dışı çalışmalarda bundle identifier olmadığı için merkez
 /// kullanılamaz; o durumda eski AppleScript yolu devreye girer.
 @MainActor
-final class Notifier: NSObject, UNUserNotificationCenterDelegate {
+final class Notifier: NSObject, UNUserNotificationCenterDelegate, UsageNotifying {
     private let center: UNUserNotificationCenter?
     /// Merkez bir kez hata verirse sonraki bildirimler AppleScript ile gider
     private var centerUnavailable = false
