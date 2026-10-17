@@ -1,0 +1,125 @@
+/* LLMBar - 한국어 */
+
+/* Section Headers */
+"section.plan_usage" = "Claude 요금제 사용 한도";
+"section.weekly" = "주간 한도";
+"section.extra_usage" = "추가 사용량";
+
+/* Usage Rows */
+"usage.current_session" = "현재 세션";
+"usage.all_models" = "모든 모델";
+"usage.sonnet_only" = "Sonnet 전용";
+"usage.opus_only" = "Opus 전용";
+"usage.sonnet_not_used" = "아직 Sonnet을 사용하지 않았습니다";
+"usage.percent_used" = "%d%% 사용";
+"usage.spent" = "%@ 사용";
+"usage.resets_limit" = "%@ 초기화 · 한도: %@";
+"usage.unlimited" = "무제한";
+"usage.next_month" = "다음 달";
+
+/* Reset Time */
+"reset.in_hours_minutes" = "%d시간 %d분 후 초기화";
+"reset.in_minutes" = "%d분 후 초기화";
+"reset.at" = "%@ 초기화";
+
+/* Time Duration */
+"time.hours_minutes" = "%d시간 %d분";
+"time.minutes" = "%d분";
+
+/* Plan Badge */
+"plan.badge" = "%@ 요금제";
+
+/* Settings */
+"settings.title" = "설정";
+"settings.language" = "언어";
+"settings.language.system" = "시스템 기본값";
+"settings.launch_at_login" = "로그인 시 실행";
+"settings.show_percentage" = "메뉴 막대에 사용률 표시";
+"settings.refresh_interval" = "새로고침 간격";
+"settings.notifications" = "알림";
+"settings.test" = "테스트";
+"settings.notify_50" = "50% 사용 시 알림";
+"settings.notify_75" = "75% 사용 시 알림";
+"settings.notify_limit" = "한도 도달 시 알림";
+"settings.notify_reset" = "한도 초기화 시 알림";
+
+/* About */
+"about.title" = "LLMBar 정보";
+"about.description" = "LLM 사용 한도를 확인하는 가벼운 메뉴 막대 앱입니다. 현재 Claude와 Codex를 지원합니다.";
+"about.created_by" = "원작 ClaudeBar 개발자";
+"about.github" = "GitHub";
+"about.report_issue" = "문제 신고";
+
+/* Footer */
+"footer.last_updated" = "마지막 업데이트: %@";
+"footer.less_than_minute" = "1분 미만 전";
+"footer.minute_ago" = "%d분 전";
+"footer.minutes_ago" = "%d분 전";
+"footer.hour_ago" = "%d시간 전";
+"footer.hours_ago" = "%d시간 전";
+
+/* Loading & Errors */
+"loading" = "불러오는 중...";
+"error.not_logged_in" = "로그인되어 있지 않습니다";
+"error.no_access_token" = "액세스 토큰이 없습니다";
+"error.invalid_url" = "잘못된 URL입니다";
+"error.http" = "HTTP %d";
+"error.parse" = "응답을 해석하지 못했습니다";
+"error.no_refresh_token" = "갱신 토큰이 없습니다";
+"error.token_refresh_failed" = "토큰을 갱신하지 못했습니다";
+"error.request_failed" = "요청에 실패했습니다";
+
+/* Notifications */
+"notification.50_title" = "사용량 50% 경고";
+"notification.50_body" = "%@ 사용 한도의 50%%를 사용했습니다.";
+"notification.75_title" = "사용량 75% 경고";
+"notification.75_body" = "%@ 사용 한도의 75%%를 사용했습니다.";
+"notification.limit_title" = "사용 한도 도달";
+"notification.limit_body" = "%@ 사용 한도에 도달했습니다.";
+"notification.limit_body_resets" = "%@ 사용 한도에 도달했습니다. %@ 후 초기화됩니다.";
+"notification.reset_title" = "사용 한도 초기화";
+"notification.reset_body" = "%@ 사용 한도가 초기화되었습니다. Claude를 계속 사용할 수 있습니다.";
+"notification.test_50_body" = "현재 세션 사용 한도의 50%를 사용했습니다.";
+"notification.test_75_body" = "현재 세션 사용 한도의 75%를 사용했습니다.";
+"notification.test_limit_body" = "현재 세션 사용 한도에 도달했습니다. %@ 후 초기화됩니다.";
+"notification.test_reset_body" = "현재 세션 사용 한도가 초기화되었습니다. Claude를 계속 사용할 수 있습니다.";
+
+/* Refresh Intervals */
+"interval.30s" = "30초";
+"interval.1m" = "1분";
+"interval.2m" = "2분";
+"interval.5m" = "5분";
+
+/* Limit Names */
+"limit.current_session" = "현재 세션";
+"limit.weekly" = "주간";
+"limit.sonnet_weekly" = "Sonnet 주간";
+"limit.extra_usage" = "추가";
+
+/* Credits & Model Limits (v1.1) */
+"section.credits" = "사용 크레딧";
+"usage.one_time_credit" = "일회성 크레딧";
+"usage.expires" = "%@ 만료";
+"usage.model_only" = "%@ 전용";
+"usage.extra_disabled.org_level_disabled_until" = "조직에서 비활성화했습니다";
+"usage.extra_disabled.org_spend_cap_reached" = "조직 지출 한도에 도달했습니다";
+"usage.extra_disabled.out_of_credits" = "크레딧을 모두 사용했습니다";
+"usage.extra_disabled.generic" = "현재 추가 사용이 불가능합니다";
+"error.login_required" = "세션이 만료되었습니다. 터미널에서 'claude login'을 실행하세요.";
+"error.refresh_in_progress" = "Claude Code에서 세션을 갱신하고 있습니다. 다시 시도합니다";
+"settings.notifications_denied" = "시스템 설정 > 알림에서 비활성화되어 있습니다";
+"limit.opus_weekly" = "Opus 주간";
+"limit.model_weekly" = "%@ 주간";
+
+/* Codex */
+"section.codex_plan_usage" = "Codex 요금제 사용 한도";
+"usage.five_hour" = "5시간 한도";
+"usage.weekly" = "주간 한도";
+"limit.codex_five_hour" = "5시간";
+"limit.codex_weekly" = "주간";
+"notification.provider_title" = "%1$@ - %2$@";
+"notification.codex_reset_body" = "%@ 사용 한도가 초기화되었습니다. Codex를 계속 사용할 수 있습니다.";
+"error.codex_login_required" = "세션이 만료되었습니다. 터미널에서 'codex login'을 실행하세요.";
+"error.codex_rate_limited" = "요청이 너무 많습니다. 다시 시도합니다";
+"error.codex_unsupported_storage" = "지원하지 않는 Codex 자격 증명 저장 방식입니다";
+"error.codex_account_changed" = "Codex 계정이 변경되었습니다. 다시 시도합니다";

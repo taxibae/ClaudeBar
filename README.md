@@ -24,7 +24,7 @@
 - **Usage Credits** - Shows one-time credits and when they expire
 - **Extra Usage Support** - Track pay-as-you-go spend, and see why it is disabled when your organization turns it off
 - **Color-coded Progress Bars** - Green, yellow, orange, red based on usage percentage
-- **Language Picker** - English, with an in-app language picker for future translations
+- **Language Picker** - English and Korean, with automatic system language detection
 - **Customizable Notifications** - Native Notification Center alerts at 50%, 75%, 100%, or on reset, for every tracked limit
 - **Auto-refresh** - Configurable refresh interval (30s, 1m, 2m, 5m)
 - **Launch at Login** - Optionally start with your Mac
@@ -108,7 +108,7 @@ Click the ⚙️ icon to configure:
 |---------|-------------|
 | Launch at login | Start automatically when you log in |
 | Show % in menu bar | Display Claude (C) and Codex (G) five-hour usage in place of the menu bar icon, e.g. `C12% G10%` |
-| Language | Choose app language (System, English) |
+| Language | Choose app language (System, English, 한국어) |
 | Refresh interval | How often to fetch usage data (30s - 5m) |
 | Notify when 50% used | Send notification at 50% usage |
 | Notify when 75% used | Send notification at 75% usage |
@@ -241,7 +241,7 @@ claudebar/
     ├── Shared/                    # Provider protocol, common models, polling service, thresholds, Keychain tool
     ├── Claude/                    # Claude Code credentials and lock files, OAuth client, response models, adapter
     ├── Codex/                     # Codex CLI credentials, ChatGPT usage client, response models, adapter
-    └── Resources/                 # Localized strings (en)
+    └── Resources/                 # Localized strings (en, ko)
 ```
 
 ## Contributing
